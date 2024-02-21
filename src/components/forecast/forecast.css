@@ -44,6 +44,8 @@
   flex: 1 1;
   grid-template-columns: auto auto;
   padding: 5px 15px;
+  background-color: #ffffff59;
+  border-radius: 18px;
 }
 
 .daily-details-grid-item {
@@ -54,7 +56,7 @@
 }
 
 .daily-details-grid-item label:first-child {
-  color: #757575;
+  color: black;
 }
 
 .daily-details-grid-item label:last-child {

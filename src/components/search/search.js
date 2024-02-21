@@ -5,23 +5,28 @@ import { GEO_API_URL, geoApiOptions } from "../../api";
 const Search = ({ onSearchChange }) => {
   const [search, setSearch] = useState(null);
 
-  const loadOptions = (inputValue) => {
-    return fetch(
-      `${GEO_API_URL}/cities?minPopulation=1000&namePrefix=${inputValue}`,
-      geoApiOptions
-    )
-      .then((response) => response.json())
-      .then((response) => {
-        return {
-          options: response.data.map((city) => {
-            return {
-              value: `${city.latitude} ${city.longitude}`,
-              label: `${city.name}, ${city.countryCode}`,
-            };
-          }),
-        };
-      })
-      .catch((err) => console.error(err));
+  const loadOptions = async (inputValue, prevOptions) => {
+    try {
+      const response = await fetch(
+        `${GEO_API_URL}/cities?minPopulation=1000&namePrefix=${inputValue}`,
+        geoApiOptions
+      );
+      const data = await response.json();
+
+      return {
+        options: data.data.map((city) => ({
+          value: `${city.latitude} ${city.longitude}`,
+          label: `${city.name}, ${city.countryCode}`,
+        })),
+        hasMore: true,
+      };
+    } catch (error) {
+      console.error("Error loading options:", error);
+      return {
+        options: [],
+        hasMore: false,
+      };
+    }
   };
 
   const handleOnChange = (searchData) => {
